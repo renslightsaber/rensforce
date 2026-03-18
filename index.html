@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ro-hoon Oh | AI Research Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { inter: ['Inter', 'sans-serif'] },
+          colors: {
+            bg: '#0a0a0a',
+            surface: '#111111',
+            'surface-2': '#1a1a1a',
+            border: '#222222',
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.6s ease forwards',
+            'fade-in': 'fadeIn 0.5s ease forwards',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(24px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    body { background-color: #0a0a0a; font-family: 'Inter', sans-serif; color: #e5e5e5; }
+    .gradient-text { background: linear-gradient(135deg, #a78bfa, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .gradient-border { background: linear-gradient(135deg, #7c3aed, #4f46e5); padding: 3px; border-radius: 9999px; }
+    .card { background: #111111; border: 1px solid #222222; border-radius: 12px; transition: border-color 0.3s, transform 0.3s; }
+    .card:hover { border-color: #7c3aed; transform: translateY(-2px); }
+    .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 9999px; font-size: 12px; font-weight: 500; }
+    .section-fade { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .section-fade.visible { opacity: 1; transform: translateY(0); }
+    .nav-link { position: relative; transition: color 0.2s; }
+    .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, #a78bfa, #818cf8); transition: width 0.3s; }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+    .nav-link.active { color: #a78bfa; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: block; }
+    .timeline-dot { width: 12px; height: 12px; background: linear-gradient(135deg, #a78bfa, #818cf8); border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+    .timeline-line { width: 2px; background: linear-gradient(to bottom, #7c3aed, transparent); flex: 1; margin-left: 5px; }
+  </style>
+</head>
+<body class="antialiased">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <!-- 브랜드 -->
+      <a href="#home" class="text-lg font-bold gradient-text tracking-tight">Ro-hoon Oh</a>
+
+      <!-- 데스크탑 메뉴 -->
+      <div class="hidden md:flex items-center gap-6 text-sm text-neutral-400">
+        <a href="#home"      class="nav-link hover:text-white">Home</a>
+        <a href="#about"     class="nav-link hover:text-white">About</a>
+        <a href="#career"    class="nav-link hover:text-white">Career</a>
+        <a href="#projects"  class="nav-link hover:text-white">Projects</a>
+        <a href="#papers"    class="nav-link hover:text-white">Papers</a>
+        <a href="#education" class="nav-link hover:text-white">Education</a>
+        <a href="#awards"    class="nav-link hover:text-white">Awards</a>
+        <a href="#contact"   class="nav-link hover:text-white">Contact</a>
+      </div>
+
+      <!-- 모바일 햄버거 버튼 -->
+      <button id="menu-btn" class="md:hidden text-neutral-400 hover:text-white" aria-label="메뉴 열기">
+        <svg id="menu-icon-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg id="menu-icon-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="hidden">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- 모바일 드롭다운 메뉴 -->
+    <div id="mobile-menu" class="md:hidden bg-surface border-t border-border px-6 pb-4">
+      <div class="flex flex-col gap-4 pt-4 text-sm text-neutral-400">
+        <a href="#home"      class="mobile-nav-link hover:text-white transition-colors">Home</a>
+        <a href="#about"     class="mobile-nav-link hover:text-white transition-colors">About</a>
+        <a href="#career"    class="mobile-nav-link hover:text-white transition-colors">Career</a>
+        <a href="#projects"  class="mobile-nav-link hover:text-white transition-colors">Projects</a>
+        <a href="#papers"    class="mobile-nav-link hover:text-white transition-colors">Papers</a>
+        <a href="#education" class="mobile-nav-link hover:text-white transition-colors">Education</a>
+        <a href="#awards"    class="mobile-nav-link hover:text-white transition-colors">Awards</a>
+        <a href="#contact"   class="mobile-nav-link hover:text-white transition-colors">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section id="home" class="min-h-screen flex items-center pt-20">
+    <div class="max-w-6xl mx-auto px-6 py-20">
+      <div class="flex flex-col-reverse md:flex-row items-center gap-12">
+        <!-- 텍스트 영역 -->
+        <div class="flex-1 section-fade">
+          <p class="text-purple-400 text-sm font-medium mb-3 tracking-widest uppercase">AI Research Engineer</p>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-5">
+            Hello, This is<br/><span class="gradient-text">Ro-hoon Oh</span>
+          </h1>
+          <p class="text-neutral-400 text-lg leading-relaxed mb-8 max-w-lg">
+            Speech AI engineer specializing in TTS, speech synthesis, and Audio-LLM.
+            Building the next generation of voice intelligence.
+          </p>
+
+          <!-- SNS 링크 -->
+          <div class="flex items-center gap-4 mb-8">
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/in/heiswicked/" target="_blank" rel="noopener"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-surface-2 text-neutral-400 hover:text-white hover:border-purple-500 transition-all text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              LinkedIn
+            </a>
+            <!-- GitHub -->
+            <a href="https://github.com/renslightsaber" target="_blank" rel="noopener"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-surface-2 text-neutral-400 hover:text-white hover:border-purple-500 transition-all text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+              </svg>
+              GitHub
+            </a>
+            <!-- Email -->
+            <a href="mailto:heiscold@gmail.com"
+               class="flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-surface-2 text-neutral-400 hover:text-white hover:border-purple-500 transition-all text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              Email
+            </a>
+          </div>
+
+          <!-- 기술 스택 배지 -->
+          <div class="flex flex-wrap gap-2">
+            <span class="badge bg-purple-900/40 text-purple-300 border border-purple-700/50">Python</span>
+            <span class="badge bg-indigo-900/40 text-indigo-300 border border-indigo-700/50">PyTorch</span>
+          </div>
+        </div>
+
+        <!-- 프로필 이미지 -->
+        <div class="flex-shrink-0 section-fade" style="transition-delay: 0.2s">
+          <div class="gradient-border">
+            <div class="w-52 h-52 md:w-64 md:h-64 rounded-full bg-surface-2 overflow-hidden flex items-center justify-center">
+              <img src="profile.png" alt="Ro-hoon Oh" class="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section id="about" class="py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade">
+        <h2 class="text-3xl font-bold text-white mb-2">About <span class="gradient-text">Me</span></h2>
+        <div class="w-12 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded mb-10"></div>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="card p-6">
+            <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
+              <span class="text-purple-400">&#9670;</span> Who I Am
+            </h3>
+            <p class="text-neutral-400 leading-relaxed text-sm">
+              AI Research Engineer with deep expertise in speech synthesis and Audio-LLMs.
+              I'm passionate about pushing the boundary of what machines can hear, understand, and say —
+              building systems that feel truly natural.
+            </p>
+          </div>
+          <div class="card p-6">
+            <h3 class="text-white font-semibold mb-3 flex items-center gap-2">
+              <span class="text-purple-400">&#9670;</span> What I Do
+            </h3>
+            <p class="text-neutral-400 leading-relaxed text-sm">
+              From TTS to Audio-LLM research, I design and train production-grade
+              speech models. I bridge cutting-edge NLP/speech research with real-world deployment,
+              optimizing for both quality and latency.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CAREER SECTION ===== -->
+  <section id="career" class="py-16 bg-surface/30">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade">
+        <h2 class="text-3xl font-bold text-white mb-2">Work <span class="gradient-text">Experiences</span></h2>
+        <div class="w-12 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded mb-10"></div>
+
+        <!-- DAY1COMPANY -->
+        <div class="card p-8">
+          <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+            <div>
+              <h3 class="text-xl font-bold text-white">DAY1COMPANY</h3>
+              <p class="text-purple-400 font-medium mt-1">AI Research Engineer · Speech AI Team</p>
+            </div>
+            <span class="badge bg-purple-900/40 text-purple-300 border border-purple-700/50 self-start">2022.04 – 2022.12</span>
+          </div>
+          <ul class="space-y-3 text-neutral-400 text-sm">
+            <li class="flex items-start gap-3">
+              <span class="text-purple-400 mt-1 flex-shrink-0">›</span>
+              Designed and led the Torch's Breath curriculum on PyTorch, Transformer implementation, and Lightning.
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-purple-400 mt-1 flex-shrink-0">›</span>
+              Joined student teams as an AI researcher and won competition awards: Kaggle "Feedback Prize - English Language Learning" (Silver Medal) and Monthly Dacon Speaker's Emotion Recognition AI Competition (5th Prize).
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS SECTION ===== -->
+  <section id="projects" class="py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade">
+        <h2 class="text-3xl font-bold text-white mb-2"><span class="gradient-text">Projects</span></h2>
+        <div class="w-12 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded mb-10"></div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+
+          <!-- Project 1 -->
+          <div class="card p-6 flex flex-col">
+            <div class="flex items-start justify-between mb-3">
+              <h3 class="text-white font-semibold text-lg">FastSpeech2 Reproduction &amp; Training Pipeline</h3>
+              <span class="badge bg-purple-900/30 text-purple-400 border border-purple-700/40 text-xs ml-2 flex-shrink-0">2023.10 – 2024.01</span>
+            </div>
+            <ul class="text-neutral-400 text-sm leading-relaxed flex-1 mb-5 space-y-1.5 list-none">
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Reimplemented the FastSpeech2 model and built a training pipeline to analyze TTS architectures and establish a baseline model for subsequent research.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Analyzed MFA (Montreal Forced Alignment) and Transformer-based TTS architectures, and verified module-level tensor I/O behavior.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Implemented GPU/CPU memory profiling utilities to diagnose and mitigate training-time memory spikes.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>IPA-based: trained for Korean, German, and English. ARPABET-based: trained for English.</li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">Python</span>
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">PyTorch</span>
+              <!-- <span class="badge bg-neutral-800 text-neutral-300 text-xs">TTS</span> -->
+            </div>
+            <div class="flex flex-col gap-2">
+              <a href="https://github.com/elu-lab/FASTSPeech2" target="_blank" rel="noopener"
+                 class="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                GitHub (IPA)
+              </a>
+              <a href="https://github.com/elu-lab/fastspeech2_a" target="_blank" rel="noopener"
+                 class="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                GitHub (ARPABET)
+              </a>
+            </div>
+          </div>
+
+          <!-- Project 2 -->
+          <div class="card p-6 flex flex-col">
+            <div class="flex items-start justify-between mb-3">
+              <h3 class="text-white font-semibold text-lg">Controllable Speech Synthesis</h3>
+              <span class="badge bg-purple-900/30 text-purple-400 border border-purple-700/40 text-xs ml-2 flex-shrink-0">2024.01 – 2024.03</span>
+            </div>
+            <ul class="text-neutral-400 text-sm leading-relaxed flex-1 mb-5 space-y-1.5 list-none">
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Industry-academia collaborative research project on controllable speech synthesis.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Designed and implemented a controllable TTS module integrated into an internal speech synthesis pipeline.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Developed speech synthesis functionality enabling control over prosodic attributes such as pitch and energy.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Detailed architecture and implementation are not disclosed due to the security policy of the collaboration project.</li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">Python</span>
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">PyTorch</span>
+              <!-- <span class="badge bg-neutral-800 text-neutral-300 text-xs">TTS</span> -->
+            </div>
+            <span class="flex items-center gap-2 text-sm text-neutral-500 italic">
+              🔒 Confidential — architecture not disclosed
+            </span>
+          </div>
+
+          <!-- Project 3 -->
+          <div class="card p-6 flex flex-col">
+            <div class="flex items-start justify-between mb-3">
+              <h3 class="text-white font-semibold text-lg">Matcha-TTS Reproduction &amp; Experiments</h3>
+              <span class="badge bg-purple-900/30 text-purple-400 border border-purple-700/40 text-xs ml-2 flex-shrink-0">2024.03 – 2024.05</span>
+            </div>
+            <ul class="text-neutral-400 text-sm leading-relaxed flex-1 mb-5 space-y-1.5 list-none">
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Reimplemented the Matcha-TTS architecture and built a training pipeline, conducting experiments on Conditional Flow Matching–based TTS models.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Analyzed MAS (Monotonic Alignment Search) and Flow Matching-based TTS architectures, and verified module-level tensor I/O behavior.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Implemented a Lightning callback for automated GPU/CPU memory cleanup to improve training stability.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Released interactive Colab notebooks with synthesized speech samples for reproducible demonstration.</li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">Python</span>
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">PyTorch</span>
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">Lightning</span>
+            </div>
+            <a href="https://github.com/elu-lab/matcha_tts_e" target="_blank" rel="noopener"
+               class="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              View on GitHub
+            </a>
+          </div>
+
+          <!-- Project 4 -->
+          <div class="card p-6 flex flex-col">
+            <div class="flex items-start justify-between mb-3">
+              <h3 class="text-white font-semibold text-lg">Diffusion Model (DDPM) Reproduction</h3>
+              <span class="badge bg-purple-900/30 text-purple-400 border border-purple-700/40 text-xs ml-2 flex-shrink-0">2024.04 – 2024.06</span>
+            </div>
+            <ul class="text-neutral-400 text-sm leading-relaxed flex-1 mb-5 space-y-1.5 list-none">
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Reimplemented the DDPM architecture and built a training pipeline to explore the applicability of diffusion models to TTS and speech editing tasks.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Analyzed the DDPM algorithm and diffusion model architecture and verified module-tensor I/O operations.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Built a reproducible diffusion-model training pipeline to analyze stochastic behavior and training efficiency.</li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">Python</span>
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">PyTorch</span>
+            </div>
+            <a href="https://github.com/renslightsaber/ddpm_e" target="_blank" rel="noopener"
+               class="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              View on GitHub
+            </a>
+          </div>
+
+          <!-- Project 5 -->
+          <div class="card p-6 flex flex-col md:col-span-2">
+            <div class="flex items-start justify-between mb-3">
+              <h3 class="text-white font-semibold text-lg">Construction of a Korean Speech Dataset</h3>
+              <span class="badge bg-purple-900/30 text-purple-400 border border-purple-700/40 text-xs ml-2 flex-shrink-0">2024.07 – 2025.09</span>
+            </div>
+            <ul class="text-neutral-400 text-sm leading-relaxed flex-1 mb-5 space-y-1.5 list-none">
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Built a Korean speech dataset containing utterances with descriptive modifiers, emotional expressions, and paraverbal expressions.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Organized a team with one teammate, nine actors, one scriptwriter, and one director, including direct participant recruitment.</li>
+              <li class="flex items-start gap-2"><span class="text-purple-400 flex-shrink-0">›</span>Owned the end-to-end recording pipeline: script planning/review, revision cycles, session direction, QA, feedback, re-recording, and final approval.</li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">Python</span>
+              <span class="badge bg-neutral-800 text-neutral-300 text-xs">Speech Processing</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAPERS SECTION ===== -->
+  <section id="papers" class="py-16 bg-surface/30">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade">
+        <h2 class="text-3xl font-bold text-white mb-2"><span class="gradient-text">Papers</span></h2>
+        <div class="w-12 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded mb-10"></div>
+
+        <div class="space-y-6">
+
+          <!-- Paper 1 -->
+          <div class="card p-6">
+            <div class="flex flex-col md:flex-row md:items-start gap-4">
+              <div class="flex-1">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                  <!-- <span class="badge bg-indigo-900/50 text-indigo-300 border border-indigo-700/50">INTERSPEECH 2026</span> -->
+                  <span class="badge bg-indigo-900/50 text-indigo-300 border border-indigo-700/50">INTERSPEECH 2026 Submitted</span>
+                  <span class="badge bg-yellow-900/30 text-yellow-400 border border-yellow-700/40">Under Review</span>
+                </div>
+                <h3 class="text-white font-semibold text-lg mb-2 leading-snug">
+                  VorTEX: Various overlap ratio for Target Speech EXtraction
+                </h3>
+                <p class="text-neutral-500 text-sm mb-1">Ro-hoon Oh*, Jihwan Seol*, Bugeun Kim &nbsp;<span class="text-neutral-600">(* Co-first authors)</span></p>
+                <p class="text-neutral-400 text-sm leading-relaxed mt-3">
+                  Proposes VorTEX, a target speech extraction model robust to various overlap ratios. Introduces the PORTE dataset for overlap-aware evaluation and the SuRE metric for comprehensive performance assessment.
+                </p>
+                <p class="text-neutral-500 text-sm leading-relaxed mt-2">
+                  Contribution: VorTEX model design and experiments, PORTE dataset construction, SuRE evaluation metric proposal, experimental result analysis.
+                </p>
+              </div>
+              <a href="https://arxiv.org/abs/2603.14803" target="_blank" rel="noopener"
+                 class="flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-surface-2 text-neutral-400 hover:text-white hover:border-purple-500 transition-all text-sm self-start flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+                arXiv
+              </a>
+            </div>
+          </div>
+
+          <!-- Paper 2 -->
+          <div class="card p-6">
+            <div class="flex flex-col md:flex-row md:items-start gap-4">
+              <div class="flex-1">
+                <div class="flex flex-wrap items-center gap-2 mb-3">
+                  <span class="badge bg-violet-900/50 text-violet-300 border border-violet-700/50">EMNLP 2025 Main</span>
+                  <span class="badge bg-emerald-900/30 text-emerald-400 border border-emerald-700/40">Published</span>
+                </div>
+                <h3 class="text-white font-semibold text-lg mb-2 leading-snug">
+                  VoiceBBQ: Investigating Effect of Content and Acoustics in Social Bias of Spoken Language Model
+                </h3>
+                <p class="text-neutral-500 text-sm mb-1">Junhyuk Choi, Ro-hoon Oh, Jihwan Seol, Bugeun Kim &nbsp;<span class="text-neutral-600">(2nd author)</span></p>
+                <p class="text-neutral-400 text-sm leading-relaxed mt-3">
+                  Investigates social bias in spoken language models by constructing VoiceBBQ, a speech-based bias benchmark. Evaluates Qwen2-Audio and LLaMA-Omni, revealing that acoustic cues significantly amplify existing textual biases.
+                </p>
+                <p class="text-neutral-500 text-sm leading-relaxed mt-2">
+                  Contribution: VoiceBBQ dataset construction, Qwen2-Audio &amp; LLaMA-Omni experiments, result analysis.
+                </p>
+              </div>
+              <a href="https://arxiv.org/abs/2509.21108" target="_blank" rel="noopener"
+                 class="flex items-center gap-2 px-4 py-2 rounded-lg border border-border bg-surface-2 text-neutral-400 hover:text-white hover:border-purple-500 transition-all text-sm self-start flex-shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                </svg>
+                arXiv
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EDUCATION SECTION ===== -->
+  <section id="education" class="py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade">
+        <h2 class="text-3xl font-bold text-white mb-2"><span class="gradient-text">Education</span></h2>
+        <div class="w-12 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded mb-10"></div>
+
+        <div class="space-y-5">
+
+          <!-- 대학원 -->
+          <div class="card p-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+              <div class="flex items-start gap-4">
+                <div class="timeline-dot mt-1"></div>
+                <div>
+                  <h3 class="text-white font-semibold">M.S., Graduate School of AI</h3>
+                  <p class="text-purple-400 text-sm mt-0.5">Chung-Ang University · ELU Lab (Prof. Bugeun Kim)</p>
+                  <p class="text-neutral-500 text-sm mt-1">TTS Team Lead</p>
+                </div>
+              </div>
+              <span class="badge bg-purple-900/30 text-purple-400 border border-purple-700/40 self-start md:self-center flex-shrink-0">Sep. 2023 – Feb. 2026</span>
+            </div>
+          </div>
+
+          <!-- KDT AI 과정 -->
+          <div class="card p-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+              <div class="flex items-start gap-4">
+                <div class="timeline-dot mt-1"></div>
+                <div>
+                  <h3 class="text-white font-semibold">KDT-AI 1st</h3>
+                  <p class="text-purple-400 text-sm mt-0.5">FastCampus</p>
+                </div>
+              </div>
+              <span class="badge bg-purple-900/30 text-purple-400 border border-purple-700/40 self-start md:self-center flex-shrink-0">Jul. 2021 – Dec. 2021</span>
+            </div>
+          </div>
+
+          <!-- 학부 -->
+          <div class="card p-6">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+              <div class="flex items-start gap-4">
+                <div class="timeline-dot mt-1"></div>
+                <div>
+                  <h3 class="text-white font-semibold">B.S. in Electrical Engineering</h3>
+                  <p class="text-purple-400 text-sm mt-0.5">Dankook University</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AWARDS SECTION ===== -->
+  <section id="awards" class="py-16 bg-surface/30">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade">
+        <h2 class="text-3xl font-bold text-white mb-2"><span class="gradient-text">Awards</span></h2>
+        <div class="w-12 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded mb-10"></div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+
+          <!-- Award 1 -->
+          <div class="card p-6 text-center">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500/20 to-indigo-600/20 border border-purple-600/30 flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#a78bfa" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/>
+              </svg>
+            </div>
+            <span class="badge bg-purple-900/30 text-purple-400 border border-purple-700/40 mb-3">AI CONNECT</span>
+            <h3 class="text-white font-semibold mb-2">2nd Prize</h3>
+            <p class="text-neutral-400 text-sm">노트북으로 GPT맛보기<br/>(AI CONNECT Notebook GPT Challenge)</p>
+            <p class="text-neutral-500 text-xs mt-2 leading-relaxed">Data: Korean News Article Text Data<br/>Task: Korean Abstractive Summary<br/>Period: Mar 20 – Mar 30, 2023<br/>Result: 2nd / 418 teams</p>
+          </div>
+
+          <!-- Award 2 -->
+          <div class="card p-6 text-center">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-orange-500/20 to-amber-700/20 border border-orange-600/30 flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#f97316" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0"/>
+              </svg>
+            </div>
+            <span class="badge bg-orange-900/30 text-orange-400 border border-orange-700/40 mb-3">Dacon</span>
+            <h3 class="text-white font-semibold mb-2">5th Prize</h3>
+            <p class="text-neutral-400 text-sm">월간 데이콘 발화자의 감정인식 AI 경진대회<br/>(Monthly Dacon Speaker's Emotion Recognition AI Competition)</p>
+            <p class="text-neutral-500 text-xs mt-2 leading-relaxed">Task: Text Classification<br/>Period: Nov 1 – Dec 12, 2022<br/><a href="https://dacon.io/ranking/interview/216" target="_blank" rel="noopener" class="text-orange-400 hover:underline">Winners Interview ↗</a></p>
+          </div>
+
+          <!-- Award 3 -->
+          <div class="card p-6 text-center">
+            <div class="w-14 h-14 rounded-full bg-gradient-to-br from-yellow-500/20 to-amber-600/20 border border-yellow-600/30 flex items-center justify-center mx-auto mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="#f59e0b" stroke-width="1.5">
+                <circle cx="12" cy="9" r="5" stroke="#f59e0b" stroke-width="1.5" fill="none"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.5 14.5L7 22l5-2.5L17 22l-1.5-7.5"/>
+              </svg>
+            </div>
+            <span class="badge bg-blue-900/30 text-blue-400 border border-blue-700/40 mb-3">Kaggle</span>
+            <h3 class="text-white font-semibold mb-2">Silver Medal</h3>
+            <!-- <p class="text-neutral-400 text-sm">Feedback Prize - English Language Learning<br/>Predicting essay scores of English language learners</p> -->
+            <p class="text-neutral-400 text-sm">Feedback Prize - English Language Learning</p>
+            <p class="text-neutral-500 text-xs mt-2 leading-relaxed">Task: Multi-Label Regression<br/>Period: Aug 30 – Nov 29, 2022<br/>Silver Medal, Top 5%</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT / FOOTER ===== -->
+  <section id="contact" class="py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="section-fade text-center">
+        <h2 class="text-3xl font-bold text-white mb-2">Get In <span class="gradient-text">Touch</span></h2>
+        <div class="w-12 h-1 bg-gradient-to-r from-purple-500 to-indigo-500 rounded mb-6 mx-auto"></div>
+        <p class="text-neutral-400 max-w-lg mx-auto mb-10">
+          Interested in collaborating or have an opportunity to discuss?
+          Feel free to reach out — I'm always open to interesting conversations.
+        </p>
+
+        <div class="flex flex-wrap justify-center gap-4 mb-16">
+          <a href="mailto:heiscold@gmail.com"
+             class="flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium hover:from-purple-500 hover:to-indigo-500 transition-all shadow-lg shadow-purple-900/30">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            heiscold@gmail.com
+          </a>
+          <a href="https://www.linkedin.com/in/heiswicked/" target="_blank" rel="noopener"
+             class="flex items-center gap-2 px-6 py-3 rounded-xl border border-border bg-surface-2 text-neutral-300 hover:text-white hover:border-purple-500 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/renslightsaber" target="_blank" rel="noopener"
+             class="flex items-center gap-2 px-6 py-3 rounded-xl border border-border bg-surface-2 text-neutral-300 hover:text-white hover:border-purple-500 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+            GitHub
+          </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="border-t border-border pt-8">
+          <p class="text-neutral-600 text-sm">
+            &copy; 2026 Ro-hoon Oh · Built with Tailwind CSS
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // ── 네비게이션 스크롤 효과 ──
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        navbar.style.background = 'rgba(10,10,10,0.85)';
+        navbar.style.backdropFilter = 'blur(16px)';
+        navbar.style.borderBottom = '1px solid #222';
+      } else {
+        navbar.style.background = 'transparent';
+        navbar.style.backdropFilter = 'none';
+        navbar.style.borderBottom = 'none';
+      }
+    });
+
+    // ── 모바일 메뉴 토글 ──
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
+
+    menuBtn.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      iconOpen.classList.toggle('hidden', isOpen);
+      iconClose.classList.toggle('hidden', !isOpen);
+    });
+
+    // 모바일 메뉴 링크 클릭 시 닫기
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      });
+    });
+
+    // ── 섹션 페이드인 애니메이션 (IntersectionObserver) ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.section-fade').forEach(el => observer.observe(el));
+
+    // ── Active nav 하이라이트 ──
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }, { threshold: 0.5, rootMargin: '-80px 0px -40% 0px' });
+
+    sections.forEach(section => navObserver.observe(section));
+  </script>
+</body>
+</html>
